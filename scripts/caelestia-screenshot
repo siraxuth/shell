@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+MODE="$1"
+DIR="$HOME/Pictures/Screenshots"
+mkdir -p "$DIR"
+FILE="$DIR/$(date +%Y%m%d_%H%M%S).png"
+
+case "$MODE" in
+    screen)
+        grim "$FILE"
+        notify-send "Screenshot" "Saved to $FILE" -i "$FILE"
+        ;;
+    active)
+        # จับเฉพาะ active window โดยใช้ hyprctl
+        GEOM=$(hyprctl activewindow -j | python3 -c "
+import json,sys
+w=json.load(sys.stdin)
+x,y=w[\"at\"]
+W,H=w[\"size\"]
+print(f\"{x},{y} {W}x{H}\")
+")
+        grim -g "$GEOM" "$FILE"
+        notify-send "Screenshot" "Saved to $FILE" -i "$FILE"
+        ;;
+    region)
+        GEOM=$(slurp)
+        [ -n "$GEOM" ] && grim -g "$GEOM" "$FILE" && notify-send "Screenshot" "Saved to $FILE" -i "$FILE"
+        ;;
+    clip)
+        GEOM=$(slurp)
+        [ -n "$GEOM" ] && grim -g "$GEOM" - | wl-copy
+        notify-send "Screenshot" "Copied to clipboard"
+        ;;
+esac

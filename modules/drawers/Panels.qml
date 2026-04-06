@@ -55,17 +55,21 @@ Item {
         anchors.rightMargin: session.width + sidebar.width
     }
 
-    Notifications.Wrapper {
-        id: notifications
+Notifications.Wrapper {
+    id: notifications
 
-        visibilities: root.visibilities
-        sidebarPanel: sidebar
-        osdPanel: osd
-        sessionPanel: session
+    visibilities: root.visibilities
+    sidebarPanel: sidebar
+    osdPanel: osd
+    sessionPanel: session
 
-        anchors.top: parent.top
-        anchors.right: parent.right
-    }
+    visible: root.screen.name === "eDP-1"
+    implicitWidth: root.screen.name === "eDP-1" ? implicitWidth : 0
+    implicitHeight: root.screen.name === "eDP-1" ? implicitHeight : 0
+
+    anchors.top: parent.top
+    anchors.right: parent.right
+}
 
     Session.Wrapper {
         id: session

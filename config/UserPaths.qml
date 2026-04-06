@@ -3,6 +3,7 @@ import qs.utils
 
 JsonObject {
     property string wallpaperDir: `${Paths.pictures}/Wallpapers`
+    property bool liveWallpaperAutostart: false
     property string liveWallpaperDir: `${Paths.videos}/Wallpapers`
     property string lyricsDir: `${Paths.home}/Music/lyrics/`
     property string sessionGif: "root:/assets/kurukuru.gif"

@@ -23,6 +23,11 @@ Item {
 
         IdleInhibit {}
 
+        Screenshot {
+            props: root.props
+            visibilities: root.visibilities
+        }
+
         Record {
             props: root.props
             visibilities: root.visibilities

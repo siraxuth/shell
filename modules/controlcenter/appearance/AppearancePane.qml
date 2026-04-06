@@ -253,6 +253,10 @@ Item {
 
                         rootPane: sidebarFlickable.rootPane
                     }
+                    LiveWallpaperSection {
+                        id: liveWallpaperSection
+                        rootPane: sidebarFlickable.rootPane
+                    }
                 }
             }
         }

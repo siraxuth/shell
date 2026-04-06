@@ -17,6 +17,8 @@ Item {
         property bool recordingListExpanded: false
         property string recordingConfirmDelete
         property string recordingMode
+        property bool screenshotListExpanded: false
+        property string screenshotMode
 
         reloadableId: "utilities"
     }

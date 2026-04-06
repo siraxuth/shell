@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 import ".."
 import "../components"
 import QtQuick
-import Quickshell
 import QtQuick.Layouts
 import qs.components
 import qs.components.controls
@@ -201,57 +200,6 @@ ColumnLayout {
         }
     }
 
-
-    SectionHeader {
-        Layout.topMargin: Appearance.spacing.large
-        title: qsTr("Live Wallpaper")
-        description: qsTr("Live wallpaper settings")
-    }
-
-    SectionContainer {
-        contentSpacing: Appearance.spacing.small / 2
-
-        PropertyRow {
-            label: qsTr("Video folder")
-            value: Config.paths.liveWallpaperDir || qsTr("Not set")
-        }
-
-        PropertyRow {
-            showTopMargin: true
-            label: qsTr("Max live wallpapers shown")
-            value: qsTr("%1").arg(Config.launcher.maxLiveWallpapers)
-        }
-    }
-
-    SectionHeader {
-        Layout.topMargin: Appearance.spacing.large
-        title: qsTr("Live Wallpaper Controls")
-        description: qsTr("Control the currently playing live wallpaper")
-    }
-
-    SectionContainer {
-        ToggleRow {
-            label: qsTr("Stop live wallpaper")
-            checked: false
-            toggle.onToggled: {
-                if (checked) {
-                    Quickshell.execDetached(["/home/siraxuth/.local/bin/live-wallpaper.sh", "stop"]);
-                }
-            }
-        }
-
-        ToggleRow {
-            label: qsTr("Pause live wallpaper")
-            checked: false
-            toggle.onToggled: {
-                if (checked) {
-                    Quickshell.execDetached(["/home/siraxuth/.local/bin/live-wallpaper.sh", "pause"]);
-                } else {
-                    Quickshell.execDetached(["bash", "-c", "pkill -CONT mpvpaper"]);
-                }
-            }
-        }
-    }
     SectionHeader {
         Layout.topMargin: Appearance.spacing.large
         title: qsTr("Hidden apps")

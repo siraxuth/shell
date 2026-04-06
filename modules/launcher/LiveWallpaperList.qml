@@ -66,7 +66,7 @@ PathView {
     model: videoModel
 
     implicitWidth: Math.min(numItems, count) * itemWidth
-    pathItemCount: numItems
+    pathItemCount: Math.max(1, count)
     cacheItemCount: 4
 
     snapMode: PathView.SnapToItem

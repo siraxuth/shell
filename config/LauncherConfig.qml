@@ -5,7 +5,8 @@ JsonObject {
     property bool showOnHover: false
     property int maxShown: 7
     property int maxWallpapers: 9 // Warning: even numbers look bad
-    property int maxLiveWallpapers: 9 // Warning: even numbers look bad
+    property int maxLiveWallpapers: 9
+    property bool liveWallpaperAutostart: false // Warning: even numbers look bad
     property string specialPrefix: "@"
     property string actionPrefix: ">"
     property bool enableDangerousActions: false // Allow actions that can cause losing data, like shutdown, reboot and logout
