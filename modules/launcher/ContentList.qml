@@ -19,13 +19,14 @@ Item {
     required property int rounding
 
     readonly property bool showWallpapers: search.text.startsWith(`${Config.launcher.actionPrefix}wallpaper `)
-    readonly property var currentList: showWallpapers ? wallpaperList.item : appList.item // Can be either ListView or PathView, so can't type properly
+    readonly property bool showLiveWallpapers: search.text.startsWith(`${Config.launcher.actionPrefix}live wallpaper `)
+    readonly property var currentList: showWallpapers ? wallpaperList.item : showLiveWallpapers ? liveWallpaperList.item : appList.item
 
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.bottom: parent.bottom
 
     clip: true
-    state: showWallpapers ? "wallpapers" : "apps"
+    state: showWallpapers ? "wallpapers" : showLiveWallpapers ? "livewallpapers" : "apps"
 
     states: [
         State {
@@ -49,6 +50,15 @@ Item {
                 root.implicitWidth: Math.max(Config.launcher.sizes.itemWidth * 1.2, wallpaperList.implicitWidth)
                 root.implicitHeight: Config.launcher.sizes.wallpaperHeight
                 wallpaperList.active: true
+            }
+        },
+        State {
+            name: "livewallpapers"
+
+            PropertyChanges {
+                root.implicitWidth: Math.max(Config.launcher.sizes.itemWidth * 1.2, liveWallpaperList.implicitWidth)
+                root.implicitHeight: Config.launcher.sizes.wallpaperHeight
+                liveWallpaperList.active: true
             }
         }
     ]
@@ -104,6 +114,24 @@ Item {
         }
     }
 
+    Loader {
+        id: liveWallpaperList
+
+        asynchronous: true
+        active: false
+
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        sourceComponent: LiveWallpaperList {
+            search: root.search
+            visibilities: root.visibilities
+            panels: root.panels
+            content: root.content
+        }
+    }
+
     Row {
         id: empty
 
@@ -117,7 +145,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
 
         MaterialIcon {
-            text: root.state === "wallpapers" ? "wallpaper_slideshow" : "manage_search"
+            text: root.state === "wallpapers" ? "wallpaper_slideshow" : root.state === "livewallpapers" ? "play_circle" : "manage_search"
             color: Colours.palette.m3onSurfaceVariant
             font.pointSize: Appearance.font.size.extraLarge
 
@@ -128,14 +156,14 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             StyledText {
-                text: root.state === "wallpapers" ? qsTr("No wallpapers found") : qsTr("No results")
+                text: root.state === "wallpapers" ? qsTr("No wallpapers found") : root.state === "livewallpapers" ? qsTr("No videos found") : qsTr("No results")
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.larger
                 font.weight: 500
             }
 
             StyledText {
-                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? qsTr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : qsTr("Try searching for something else")
+                text: root.state === "livewallpapers" ? qsTr("Try putting some videos in ~/Videos/Wallpapers") : root.state === "wallpapers" && Wallpapers.list.length === 0 ? qsTr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : qsTr("Try searching for something else")
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.normal
             }

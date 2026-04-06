@@ -6,6 +6,7 @@ import qs.components.controls
 import qs.services
 import qs.config
 import qs.modules.launcher.services
+import Quickshell
 
 Item {
     id: root
@@ -88,9 +89,17 @@ Item {
                             Wallpapers.previewColourLock = true;
                         Wallpapers.setWallpaper(currentItem.modelData.path);
                         root.visibilities.launcher = false;
+                    } else if (list.showLiveWallpapers) {
+                        const path = currentItem.modelData?.path ?? "";
+                        if (path) {
+                            Quickshell.execDetached(["/home/siraxuth/.local/bin/live-wallpaper.sh", "set", path]);
+                            root.visibilities.launcher = false;
+                        }
                     } else if (text.startsWith(Config.launcher.actionPrefix)) {
                         if (text.startsWith(`${Config.launcher.actionPrefix}calc `))
-                            currentItem.onClicked();
+                            currentItem.triggerAction ? currentItem.triggerAction() : currentItem.modelData?.onClicked?.(list.currentList);
+                        else if (text.startsWith(`${Config.launcher.actionPrefix}live `))
+                            currentItem.triggerAction ? currentItem.triggerAction() : currentItem.modelData?.onClicked?.(list.currentList);
                         else
                             currentItem.modelData.onClicked(list.currentList);
                     } else {

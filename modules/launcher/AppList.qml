@@ -56,6 +56,11 @@ StyledListView {
                 if (text.startsWith(`${prefix}${action} `))
                     return action;
 
+            if (text.startsWith(`${prefix}live wallpaper `))
+                return "live wallpaper";
+            if (text.startsWith(`${prefix}live `))
+                return "live";
+
             return "actions";
         }
 
@@ -106,6 +111,26 @@ StyledListView {
             PropertyChanges {
                 model.values: M3Variants.query(search.text)
                 root.delegate: variantItem
+            }
+        },
+        State {
+            name: "live"
+
+            PropertyChanges {
+                model.values: [
+                    { name: "Change Live Wallpaper", desc: "Select a video from live wallpaper folder", icon: "play_circle", action: "change" },
+                    { name: "Stop Live Wallpaper", desc: "Kill mpvpaper process", icon: "stop_circle", action: "stop" },
+                    { name: "Pause Live Wallpaper", desc: "Freeze the video in place", icon: "pause_circle", action: "pause" }
+                ]
+                root.delegate: liveActionItem
+            }
+        },
+        State {
+            name: "live wallpaper"
+
+            PropertyChanges {
+                model.values: []
+                root.delegate: appItem
             }
         }
     ]
@@ -251,6 +276,14 @@ StyledListView {
         id: variantItem
 
         VariantItem {
+            list: root
+        }
+    }
+
+    Component {
+        id: liveActionItem
+
+        LiveActionItem {
             list: root
         }
     }
